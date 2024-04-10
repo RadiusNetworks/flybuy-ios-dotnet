@@ -14,7 +14,7 @@ namespace FlyBuy
 
 		// extern const unsigned char[] FlyBuyVersionString;
 		[Field ("FlyBuyVersionString", "__Internal")]
-        NSString FlyBuyVersionString { get; }
+		NSString FlyBuyVersionString { get; }
 	}
 
 	// @interface AppConfig : NSObject
@@ -28,6 +28,19 @@ namespace FlyBuy
 	[BaseType (typeof(NSObject), Name = "_TtC6FlyBuy10AppUpgrade")]
 	interface AppUpgrade
 	{
+	}
+
+	// @interface AvailableHandoffVehicleLocation : NSObject
+	[BaseType (typeof(NSObject), Name = "_TtC6FlyBuy31AvailableHandoffVehicleLocation")]
+	interface AvailableHandoffVehicleLocation
+	{
+		// @property (readonly, copy, nonatomic) NSString * _Nonnull vehicleLocation;
+		[Export ("vehicleLocation")]
+		string VehicleLocation { get; }
+
+		// @property (readonly, copy, nonatomic) NSString * _Nonnull vehicleLocationLocalizedString;
+		[Export ("vehicleLocationLocalizedString")]
+		string VehicleLocationLocalizedString { get; }
 	}
 
 	// @interface FlyBuyBeaconList : NSObject
@@ -361,7 +374,7 @@ namespace FlyBuy
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
 	interface FlyBuyOrder : INativeObject
-    {
+	{
 		// @property (readonly, nonatomic) NSInteger id;
 		[Export ("id")]
 		nint Id { get; }
@@ -584,6 +597,16 @@ namespace FlyBuy
 		NSNumber SitePrearrivalSeconds { get; }
 	}
 
+	// @interface FlyBuy_Swift_853 (FlyBuyOrder)
+	[Category]
+	[BaseType (typeof(FlyBuyOrder))]
+	interface FlyBuyOrder_FlyBuy_Swift_853
+	{
+		// @property (readonly, nonatomic) BOOL locationTrackingDeferred;
+		[Export("locationTrackingDeferred")]
+		bool Get_LocationTrackingDeferred();
+	}
+
 	// @interface FlyBuyOrderEvent : NSObject
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
@@ -635,6 +658,10 @@ namespace FlyBuy
 		// @property (readonly, copy, nonatomic) NSString * _Nullable spotIdentifier;
 		[NullAllowed, Export ("spotIdentifier")]
 		string SpotIdentifier { get; }
+
+		// @property (readonly, copy, nonatomic) NSString * _Nullable handoffVehicleLocation;
+		[NullAllowed, Export ("handoffVehicleLocation")]
+		string HandoffVehicleLocation { get; }
 	}
 
 	// @interface FlyBuyOrderOptionsBuilder : NSObject
@@ -642,6 +669,19 @@ namespace FlyBuy
 	[DisableDefaultCtor]
 	interface FlyBuyOrderOptionsBuilder
 	{
+	}
+
+	// @interface OrderProgressState : NSObject
+	[BaseType (typeof(NSObject), Name = "_TtC6FlyBuy18OrderProgressState")]
+	interface OrderProgressState
+	{
+		// @property (readonly, copy, nonatomic) NSString * _Nonnull state;
+		[Export ("state")]
+		string State { get; }
+
+		// @property (readonly, copy, nonatomic) NSString * _Nonnull stateLocalizedString;
+		[Export ("stateLocalizedString")]
+		string StateLocalizedString { get; }
 	}
 
 	// @interface FlyBuyOrdersManager : NSObject
@@ -749,6 +789,12 @@ namespace FlyBuy
 		void RateOrderWithOrderID (nint orderID, nint rating, [NullAllowed] string comments, [NullAllowed] Action<FlyBuyOrder, NSError> callback);
 	}
 
+	// @interface FlyBuy_Swift_1137 (FlyBuyOrdersManager) <CLLocationManagerDelegate>
+	[BaseType (typeof(FlyBuyOrdersManager))]
+	interface FlyBuyOrdersManager_FlyBuy_Swift_1137 : ICLLocationManagerDelegate
+	{
+	}
+
 	// @interface FlyBuyOrdersManagerError : NSObject
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
@@ -825,6 +871,14 @@ namespace FlyBuy
 		// @property (readonly, copy, nonatomic) NSArray<PickupTypeConfig *> * _Nonnull availablePickupTypes;
 		[Export ("availablePickupTypes", ArgumentSemantic.Copy)]
 		PickupTypeConfig[] AvailablePickupTypes { get; }
+
+		// @property (readonly, copy, nonatomic) NSArray<AvailableHandoffVehicleLocation *> * _Nonnull availableHandoffVehicleLocation;
+		[Export ("availableHandoffVehicleLocation", ArgumentSemantic.Copy)]
+		AvailableHandoffVehicleLocation[] AvailableHandoffVehicleLocation { get; }
+
+		// @property (readonly, copy, nonatomic) NSArray<OrderProgressState *> * _Nonnull orderProgressStates;
+		[Export ("orderProgressStates", ArgumentSemantic.Copy)]
+		OrderProgressState[] OrderProgressStates { get; }
 	}
 
 	// @interface PickupTypeConfig : NSObject
@@ -842,6 +896,10 @@ namespace FlyBuy
 		// @property (readonly, nonatomic) BOOL showVehicleInfoFields;
 		[Export ("showVehicleInfoFields")]
 		bool ShowVehicleInfoFields { get; }
+
+		// @property (readonly, nonatomic) BOOL showHandoffVehicleLocations;
+		[Export ("showHandoffVehicleLocations")]
+		bool ShowHandoffVehicleLocations { get; }
 
 		// @property (readonly, nonatomic) BOOL requireVehicleInfo;
 		[Export ("requireVehicleInfo")]
@@ -878,7 +936,7 @@ namespace FlyBuy
 	// @interface FlyBuySite : NSObject
 	[BaseType (typeof(NSObject))]
 	interface FlyBuySite : INativeObject
-    {
+	{
 		// @property (readonly, nonatomic) NSInteger id;
 		[Export ("id")]
 		nint Id { get; }
