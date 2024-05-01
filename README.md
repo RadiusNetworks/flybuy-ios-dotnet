@@ -25,12 +25,15 @@ The easiest way to configure Flybuy in your app is to call the `FlyBuyCore.Confi
 ```csharp
 public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
 {
-    var opts = new NSDictionary<NSString, NSObject>(
-        new NSString("token"), new NSString("TOKEN")
-    );
+    // Configure SDK
+    var token = "102.token";
+    var builder = FlyBuyConfigOptions.BuilderWithToken(token);
+    builder.SetDeferredLocationTracking(true);
+    FlyBuyCore.ConfigureWithOptions(builder.Build);
 
-    FlyBuyCore.Configure(opts);
+    // Configure Pickup Module
     FlyBuyPickupManager.Shared.Configure();
+    // Configure if using Notify Module
     FlyBuyNotifyManager.Shared.Configure();
 }
 ```
