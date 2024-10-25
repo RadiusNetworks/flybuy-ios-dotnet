@@ -327,13 +327,6 @@ namespace FlyBuy
 	{
 	}
 
-        // @interface ETAConfig : NSObject
-        [BaseType (typeof(NSObject), Name = "_TtC6FlyBuy9ETAConfig")]
-        [DisableDefaultCtor]
-        interface ETAConfig
-        {
-        }
-
 	// @interface FlyBuyAPIError : NSObject
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
@@ -366,7 +359,7 @@ namespace FlyBuy
                 // -(instancetype _Nonnull)initWithUuid:(NSUUID * _Nonnull)uuid major:(uint16_t)major minor:(uint16_t)minor identifier:(NSString * _Nonnull)identifier __attribute__((objc_designated_initializer));
                 [Export ("initWithUuid:major:minor:identifier:")]
                 [DesignatedInitializer]
-                NativeHandle Constructor (NSUuid uuid, ushort major, ushort minor, string identifier);
+                IntPtr Constructor (NSUuid uuid, ushort major, ushort minor, string identifier);
         }
 
         // @interface FlyBuyCircularRegion : FlyBuyRegion
@@ -376,7 +369,7 @@ namespace FlyBuy
                 // -(instancetype _Nonnull)initWithLatitude:(double)latitude longitude:(double)longitude radius:(double)radius identifier:(NSString * _Nonnull)identifier __attribute__((objc_designated_initializer));
                 [Export ("initWithLatitude:longitude:radius:identifier:")]
                 [DesignatedInitializer]
-                NativeHandle Constructor (double latitude, double longitude, double radius, string identifier);
+                IntPtr Constructor (double latitude, double longitude, double radius, string identifier);
         }
 
 	// @interface FlyBuyGeofence : NSObject
@@ -680,15 +673,15 @@ namespace FlyBuy
         {
                 // -(BOOL)isOpen __attribute__((warn_unused_result("")));
                 [Export ("isOpen")]
-                bool IsOpen { get; }
+                bool Get_IsOpen();
 
                 // @property (readonly, nonatomic, strong) PickupConfig * _Nonnull sitePickupConfig;
                 [Export ("sitePickupConfig", ArgumentSemantic.Strong)]
-                PickupConfig SitePickupConfig { get; }
+                PickupConfig Get_SitePickupConfig();
 
                 // @property (readonly, nonatomic) BOOL locationTrackingDeferred;
                 [Export ("locationTrackingDeferred")]
-                bool LocationTrackingDeferred { get; }
+                bool Get_LocationTrackingDeferred();
         }
 
 	// @interface FlyBuyOrderEvent : NSObject
@@ -756,7 +749,7 @@ namespace FlyBuy
                 // -(instancetype _Nonnull)initWithCustomerName:(NSString * _Nonnull)customerName __attribute__((objc_designated_initializer));
                 [Export ("initWithCustomerName:")]
                 [DesignatedInitializer]
-                NativeHandle Constructor (string customerName);
+                IntPtr Constructor (string customerName);
 
                 // -(FlyBuyOrderOptionsBuilder * _Nonnull)setCustomerName:(NSString * _Nonnull)name __attribute__((warn_unused_result("")));
                 [Export ("setCustomerName:")]
@@ -1076,7 +1069,7 @@ namespace FlyBuy
 	// @interface FlyBuyPlace : NSObject
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
-	interface FlyBuyPlace
+	interface FlyBuyPlace : INativeObject
 	{
 		// @property (readonly, copy, nonatomic) NSString * _Nonnull id;
 		[Export ("id")]
@@ -1101,7 +1094,7 @@ namespace FlyBuy
 		// -(instancetype _Nonnull)initWithId:(NSString * _Nonnull)id name:(NSString * _Nonnull)name placeFormatted:(NSString * _Nonnull)placeFormatted address:(NSString * _Nullable)address distance:(double)distance __attribute__((objc_designated_initializer));
 		[Export ("initWithId:name:placeFormatted:address:distance:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor (string id, string name, string placeFormatted, [NullAllowed] string address, double distance);
+		IntPtr Constructor (string id, string name, string placeFormatted, [NullAllowed] string address, double distance);
 	}
 
 	// @interface FlyBuyPlaceOptions : NSObject
@@ -1257,7 +1250,7 @@ namespace FlyBuy
 	{
 		// @property (readonly, nonatomic, strong) PickupConfig * _Nonnull pickupConfig;
 		[Export ("pickupConfig", ArgumentSemantic.Strong)]
-		PickupConfig PickupConfig { get; }
+		PickupConfig Get_PickupConfig();
 	}
 
 	// @interface FlyBuySiteOptions : NSObject
@@ -1391,7 +1384,6 @@ namespace FlyBuy
 	}
 
 	// @interface FlyBuyPickup_Swift_345 (FlyBuyPickupManager) <CLLocationManagerDelegate>
-	[Category]
 	[BaseType (typeof(FlyBuyPickupManager))]
 	interface FlyBuyPickupManager_FlyBuyPickup_Swift_345 : ICLLocationManagerDelegate
 	{
@@ -1409,7 +1401,6 @@ namespace FlyBuy
 	}
 
 	// @interface FlyBuyLiveStatusManager : NSObject
-	[iOS (16,2)]
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
 	interface FlyBuyLiveStatusManager
@@ -1527,7 +1518,7 @@ namespace FlyBuy
 		// -(instancetype _Nonnull)initWithTitle:(NSString * _Nonnull)title content:(NSString * _Nonnull)content data:(NSDictionary * _Nullable)data __attribute__((objc_designated_initializer));
 		[Export ("initWithTitle:content:data:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor (string title, string content, [NullAllowed] NSDictionary data);
+		IntPtr Constructor (string title, string content, [NullAllowed] NSDictionary data);
 	}
 
 	// @interface FlyBuyNotifyError : NSObject
@@ -1542,7 +1533,7 @@ namespace FlyBuy
 		// -(instancetype _Nonnull)init:(enum NotifyErrorType)typeIn __attribute__((objc_designated_initializer));
 		[Export ("init:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor (NotifyErrorType typeIn);
+		IntPtr Constructor (NotifyErrorType typeIn);
 
 		// @property (readonly, copy, nonatomic) NSString * _Nonnull description;
 		[Export ("description")]
