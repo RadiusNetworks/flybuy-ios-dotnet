@@ -50,19 +50,33 @@ namespace FlyBuy
 	[Native]
 	public enum OrdersManagerErrorType : long
 	{
-		LoadingCustomer = 0,
-		LoadingApiUrl = 1,
-		AlreadyFetching = 2,
-		InvalidCustomerState = 3,
-		InvalidOrderState = 4,
-		CoreIsNotConfigured = 5
+                OrderNotFound = 0,
+                LoadingCustomer = 1,
+                LoadingApiUrl = 2,
+                AlreadyFetching = 3,
+                InvalidCustomerState = 4,
+                InvalidOrderState = 5,
+                CoreIsNotConfigured = 6,
+                InvalidPickupType = 7,
+                OrderIsNotOpen = 8
 	}
 
-	[Native]
-	public enum SitesManagerErrorType : long
-	{
-		SitesManagerErrorTypeCoreIsNotConfigured = 0
-	}
+        [Native]
+        public enum PlaceType : long
+        {
+                Address = 0,
+                Region = 1,
+                Postalcode = 2, 
+                City = 3,
+                Poi = 4
+        }       
+
+        [Native]
+        public enum SitesManagerErrorType : long
+        {
+                CoreIsNotConfigured = 0,
+                MapboxTokenIsMissing = 1
+        }
 
 	[Native]
 	public enum NotifyErrorType : long

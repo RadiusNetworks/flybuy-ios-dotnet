@@ -113,6 +113,13 @@ namespace FlyBuy
 		FlyBuyConfigOptionsBuilder SetOptions (NSDictionary<NSString, NSObject> opts);
 	}
 
+        // @interface FlyBuyCoordinate : NSObject
+        [BaseType (typeof(NSObject))]
+        [DisableDefaultCtor]
+        interface FlyBuyCoordinate
+        {
+        }
+
 	// @interface FlyBuyCore : NSObject
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
@@ -132,6 +139,11 @@ namespace FlyBuy
 		[Static]
 		[Export ("sites", ArgumentSemantic.Strong)]
 		FlyBuySitesManager Sites { get; }
+
+                // @property (readonly, nonatomic, strong, class) FlyBuyPlacesManager * _Nonnull places;
+                [Static]
+                [Export ("places", ArgumentSemantic.Strong)]
+                FlyBuyPlacesManager Places { get; }
 
 		// @property (readonly, nonatomic, strong, class) FlyBuyLogger * _Nonnull logger;
 		[Static]
@@ -315,6 +327,13 @@ namespace FlyBuy
 	{
 	}
 
+        // @interface ETAConfig : NSObject
+        [BaseType (typeof(NSObject), Name = "_TtC6FlyBuy9ETAConfig")]
+        [DisableDefaultCtor]
+        interface ETAConfig
+        {
+        }
+
 	// @interface FlyBuyAPIError : NSObject
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
@@ -332,6 +351,33 @@ namespace FlyBuy
 		[Export ("description")]
 		string Description { get; }
 	}
+
+        // @interface FlyBuyRegion : NSObject
+        [BaseType (typeof(NSObject))]
+        [DisableDefaultCtor]
+        interface FlyBuyRegion
+        {
+        }
+
+        // @interface FlyBuyBeaconRegion : FlyBuyRegion
+        [BaseType (typeof(FlyBuyRegion))]
+        interface FlyBuyBeaconRegion
+        {
+                // -(instancetype _Nonnull)initWithUuid:(NSUUID * _Nonnull)uuid major:(uint16_t)major minor:(uint16_t)minor identifier:(NSString * _Nonnull)identifier __attribute__((objc_designated_initializer));
+                [Export ("initWithUuid:major:minor:identifier:")]
+                [DesignatedInitializer]
+                NativeHandle Constructor (NSUuid uuid, ushort major, ushort minor, string identifier);
+        }
+
+        // @interface FlyBuyCircularRegion : FlyBuyRegion
+        [BaseType (typeof(FlyBuyRegion))]
+        interface FlyBuyCircularRegion
+        {
+                // -(instancetype _Nonnull)initWithLatitude:(double)latitude longitude:(double)longitude radius:(double)radius identifier:(NSString * _Nonnull)identifier __attribute__((objc_designated_initializer));
+                [Export ("initWithLatitude:longitude:radius:identifier:")]
+                [DesignatedInitializer]
+                NativeHandle Constructor (double latitude, double longitude, double radius, string identifier);
+        }
 
 	// @interface FlyBuyGeofence : NSObject
 	[BaseType (typeof(NSObject))]
@@ -456,6 +502,10 @@ namespace FlyBuy
 		// @property (copy, nonatomic) NSDate * _Nullable updatedAt;
 		[NullAllowed, Export ("updatedAt", ArgumentSemantic.Copy)]
 		NSDate UpdatedAt { get; set; }
+
+                // @property (copy, nonatomic) NSDate * _Nullable orderFiredAt;
+                [NullAllowed, Export ("orderFiredAt", ArgumentSemantic.Copy)]
+                NSDate OrderFiredAt { get; set; }
 
 		// @property (copy, nonatomic) NSString * _Nullable customerRating;
 		[NullAllowed, Export ("customerRating")]
@@ -623,15 +673,23 @@ namespace FlyBuy
 		NSNumber SitePrearrivalSeconds { get; }
 	}
 
-	// @interface FlyBuy_Swift_853 (FlyBuyOrder)
-	[Category]
-	[BaseType (typeof(FlyBuyOrder))]
-	interface FlyBuyOrder_FlyBuy_Swift_853
-	{
-		// @property (readonly, nonatomic) BOOL locationTrackingDeferred;
-		[Export("locationTrackingDeferred")]
-		bool Get_LocationTrackingDeferred();
-	}
+        // @interface FlyBuy_Swift_891 (FlyBuyOrder)
+        [Category]
+        [BaseType (typeof(FlyBuyOrder))]
+        interface FlyBuyOrder_FlyBuy_Swift_891
+        {
+                // -(BOOL)isOpen __attribute__((warn_unused_result("")));
+                [Export ("isOpen")]
+                bool IsOpen { get; }
+
+                // @property (readonly, nonatomic, strong) PickupConfig * _Nonnull sitePickupConfig;
+                [Export ("sitePickupConfig", ArgumentSemantic.Strong)]
+                PickupConfig SitePickupConfig { get; }
+
+                // @property (readonly, nonatomic) BOOL locationTrackingDeferred;
+                [Export ("locationTrackingDeferred")]
+                bool LocationTrackingDeferred { get; }
+        }
 
 	// @interface FlyBuyOrderEvent : NSObject
 	[BaseType (typeof(NSObject))]
@@ -695,6 +753,58 @@ namespace FlyBuy
 	[DisableDefaultCtor]
 	interface FlyBuyOrderOptionsBuilder
 	{
+                // -(instancetype _Nonnull)initWithCustomerName:(NSString * _Nonnull)customerName __attribute__((objc_designated_initializer));
+                [Export ("initWithCustomerName:")]
+                [DesignatedInitializer]
+                NativeHandle Constructor (string customerName);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setCustomerName:(NSString * _Nonnull)name __attribute__((warn_unused_result("")));
+                [Export ("setCustomerName:")]
+                FlyBuyOrderOptionsBuilder SetCustomerName (string name);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setCustomerPhone:(NSString * _Nullable)customerPhone __attribute__((warn_unused_result("")));
+                [Export ("setCustomerPhone:")]
+                FlyBuyOrderOptionsBuilder SetCustomerPhone ([NullAllowed] string customerPhone);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setCustomerCarColor:(NSString * _Nullable)customerCarColor __attribute__((warn_unused_result("")));
+                [Export ("setCustomerCarColor:")]
+                FlyBuyOrderOptionsBuilder SetCustomerCarColor ([NullAllowed] string customerCarColor);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setCustomerCarType:(NSString * _Nullable)customerCarType __attribute__((warn_unused_result("")));
+                [Export ("setCustomerCarType:")]
+                FlyBuyOrderOptionsBuilder SetCustomerCarType ([NullAllowed] string customerCarType);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setCustomerCarPlate:(NSString * _Nullable)customerCarPlate __attribute__((warn_unused_result("")));
+                [Export ("setCustomerCarPlate:")]
+                FlyBuyOrderOptionsBuilder SetCustomerCarPlate ([NullAllowed] string customerCarPlate);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setPartnerIdentifier:(NSString * _Nullable)partnerIdentifier __attribute__((warn_unused_result("")));
+                [Export ("setPartnerIdentifier:")]
+                FlyBuyOrderOptionsBuilder SetPartnerIdentifier ([NullAllowed] string partnerIdentifier);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setPickupWindow:(FlyBuyPickupWindow * _Nullable)pickupWindow __attribute__((warn_unused_result("")));
+                [Export ("setPickupWindow:")]
+                FlyBuyOrderOptionsBuilder SetPickupWindow ([NullAllowed] FlyBuyPickupWindow pickupWindow);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setState:(NSString * _Nullable)state __attribute__((warn_unused_result("")));
+                [Export ("setState:")]
+                FlyBuyOrderOptionsBuilder SetState ([NullAllowed] string state);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setPickupType:(NSString * _Nullable)pickupType __attribute__((warn_unused_result("")));
+                [Export ("setPickupType:")]
+                FlyBuyOrderOptionsBuilder SetPickupType ([NullAllowed] string pickupType);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setSpotIdentifier:(NSString * _Nullable)spotIdentifier __attribute__((warn_unused_result("")));
+                [Export ("setSpotIdentifier:")]
+                FlyBuyOrderOptionsBuilder SetSpotIdentifier ([NullAllowed] string spotIdentifier);
+
+                // -(FlyBuyOrderOptionsBuilder * _Nonnull)setHandoffVehicleLocation:(NSString * _Nullable)handoffVehicleLocation __attribute__((warn_unused_result("")));
+                [Export ("setHandoffVehicleLocation:")]
+                FlyBuyOrderOptionsBuilder SetHandoffVehicleLocation ([NullAllowed] string handoffVehicleLocation);
+
+                // -(FlyBuyOrderOptions * _Nonnull)build __attribute__((warn_unused_result("")));
+                [Export ("build")]
+                FlyBuyOrderOptions Build { get; }
 	}
 
 	// @interface OrderProgressState : NSObject
@@ -813,11 +923,15 @@ namespace FlyBuy
 		// -(void)rateOrderWithOrderID:(NSInteger)orderID rating:(NSInteger)rating comments:(NSString * _Nullable)comments callback:(void (^ _Nullable)(FlyBuyOrder * _Nullable, NSError * _Nullable))callback;
 		[Export ("rateOrderWithOrderID:rating:comments:callback:")]
 		void RateOrderWithOrderID (nint orderID, nint rating, [NullAllowed] string comments, [NullAllowed] Action<FlyBuyOrder, NSError> callback);
+
+                // -(void)updatePickupTypeWithOrderID:(NSInteger)orderID pickupType:(NSString * _Nonnull)pickupType callback:(void (^ _Nullable)(FlyBuyOrder * _Nullable, NSError * _Nullable))callback;
+                [Export ("updatePickupTypeWithOrderID:pickupType:callback:")]
+                void UpdatePickupTypeWithOrderID (nint orderID, string pickupType, [NullAllowed] Action<FlyBuyOrder, NSError> callback);
 	}
 
-	// @interface FlyBuy_Swift_1137 (FlyBuyOrdersManager) <CLLocationManagerDelegate>
+	// @interface FlyBuy_Swift_1226 (FlyBuyOrdersManager) <CLLocationManagerDelegate>
 	[BaseType (typeof(FlyBuyOrdersManager))]
-	interface FlyBuyOrdersManager_FlyBuy_Swift_1137 : ICLLocationManagerDelegate
+	interface FlyBuyOrdersManager_FlyBuy_Swift_1226 : ICLLocationManagerDelegate
 	{
 	}
 
@@ -959,6 +1073,85 @@ namespace FlyBuy
 		string FormattedStringWithLocale (NSLocale locale);
 	}
 
+	// @interface FlyBuyPlace : NSObject
+	[BaseType (typeof(NSObject))]
+	[DisableDefaultCtor]
+	interface FlyBuyPlace
+	{
+		// @property (readonly, copy, nonatomic) NSString * _Nonnull id;
+		[Export ("id")]
+		string Id { get; }
+
+		// @property (readonly, copy, nonatomic) NSString * _Nonnull name;
+		[Export ("name")]
+		string Name { get; }
+
+		// @property (readonly, copy, nonatomic) NSString * _Nonnull placeFormatted;
+		[Export ("placeFormatted")]
+		string PlaceFormatted { get; }
+
+		// @property (readonly, nonatomic) double distance;
+		[Export ("distance")]
+		double Distance { get; }
+
+		// @property (readonly, copy, nonatomic) NSString * _Nullable address;
+		[NullAllowed, Export ("address")]
+		string Address { get; }
+
+		// -(instancetype _Nonnull)initWithId:(NSString * _Nonnull)id name:(NSString * _Nonnull)name placeFormatted:(NSString * _Nonnull)placeFormatted address:(NSString * _Nullable)address distance:(double)distance __attribute__((objc_designated_initializer));
+		[Export ("initWithId:name:placeFormatted:address:distance:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string id, string name, string placeFormatted, [NullAllowed] string address, double distance);
+	}
+
+	// @interface FlyBuyPlaceOptions : NSObject
+	[BaseType (typeof(NSObject))]
+	[DisableDefaultCtor]
+	interface FlyBuyPlaceOptions
+	{
+		// @property (readonly, nonatomic) double latitude;
+		[Export ("latitude")]
+		double Latitude { get; }
+
+		// @property (readonly, nonatomic) double longitude;
+		[Export ("longitude")]
+		double Longitude { get; }
+
+		// @property (readonly, nonatomic) enum PlaceType type;
+		[Export ("type")]
+		PlaceType Type { get; }
+	}
+
+	// @interface FlyBuyPlaceOptionsBuilder : NSObject
+	[BaseType (typeof(NSObject))]
+	interface FlyBuyPlaceOptionsBuilder
+	{
+		// -(FlyBuyPlaceOptionsBuilder * _Nonnull)setProximityWithLatitude:(double)latitude longitude:(double)longitude __attribute__((warn_unused_result("")));
+		[Export ("setProximityWithLatitude:longitude:")]
+		FlyBuyPlaceOptionsBuilder SetProximityWithLatitude (double latitude, double longitude);
+
+		// -(FlyBuyPlaceOptionsBuilder * _Nonnull)setType:(enum PlaceType)type __attribute__((warn_unused_result("")));
+		[Export ("setType:")]
+		FlyBuyPlaceOptionsBuilder SetType (PlaceType type);
+
+		// -(FlyBuyPlaceOptions * _Nonnull)build __attribute__((warn_unused_result("")));
+		[Export ("build")]
+		FlyBuyPlaceOptions Build { get; }
+	}
+
+	// @interface FlyBuyPlacesManager : NSObject
+	[BaseType (typeof(NSObject))]
+	interface FlyBuyPlacesManager
+	{
+		// -(void)suggestWithQuery:(NSString * _Nonnull)query options:(FlyBuyPlaceOptions * _Nonnull)options callback:(void (^ _Nullable)(NSArray<FlyBuyPlace *> * _Nullable, NSError * _Nullable))callback;
+		[Export ("suggestWithQuery:options:callback:")]
+		void SuggestWithQuery (string query, FlyBuyPlaceOptions options, [NullAllowed] Action<NSArray<FlyBuyPlace>, NSError> callback);
+
+		// -(void)retrieveWithPlace:(FlyBuyPlace * _Nonnull)place callback:(void (^ _Nullable)(FlyBuyCoordinate * _Nullable, NSError * _Nullable))callback;
+		[Export ("retrieveWithPlace:callback:")]
+		void RetrieveWithPlace (FlyBuyPlace place, [NullAllowed] Action<FlyBuyCoordinate, NSError> callback);
+	}
+
 	// @interface FlyBuySite : NSObject
 	[BaseType (typeof(NSObject))]
 	interface FlyBuySite : INativeObject
@@ -1057,6 +1250,47 @@ namespace FlyBuy
 		NSNumber DistanceFrom (CLLocation loc);
 	}
 
+	// @interface FlyBuy_Swift_1423 (FlyBuySite)
+	[Category]
+	[BaseType (typeof(FlyBuySite))]
+	interface FlyBuySite_FlyBuy_Swift_1423
+	{
+		// @property (readonly, nonatomic, strong) PickupConfig * _Nonnull pickupConfig;
+		[Export ("pickupConfig", ArgumentSemantic.Strong)]
+		PickupConfig PickupConfig { get; }
+	}
+
+	// @interface FlyBuySiteOptions : NSObject
+	[BaseType (typeof(NSObject))]
+	[DisableDefaultCtor]
+	interface FlyBuySiteOptions
+	{
+		// @property (readonly, copy, nonatomic) NSString * _Nonnull operationalStatus;
+		[Export ("operationalStatus")]
+		string OperationalStatus { get; }
+	}
+
+	// @interface FlyBuySiteOptionsBuilder : NSObject
+	[BaseType (typeof(NSObject))]
+	interface FlyBuySiteOptionsBuilder
+	{
+		// -(void)setOperationalStatus:(NSString * _Nonnull)operationalStatus;
+		[Export ("setOperationalStatus:")]
+		void SetOperationalStatus (string operationalStatus);
+
+		// -(void)setPage:(NSInteger)page;
+		[Export ("setPage:")]
+		void SetPage (nint page);
+
+		// -(void)setPer:(NSInteger)per;
+		[Export ("setPer:")]
+		void SetPer (nint per);
+
+		// -(FlyBuySiteOptions * _Nonnull)build __attribute__((warn_unused_result("")));
+		[Export ("build")]
+		FlyBuySiteOptions Build { get; }
+	}
+
 	// @interface FlyBuySitesManager : NSObject
 	[BaseType (typeof(NSObject))]
 	interface FlyBuySitesManager
@@ -1065,13 +1299,31 @@ namespace FlyBuy
 		[Export ("all", ArgumentSemantic.Copy)]
 		FlyBuySite[] All { get; }
 
-		// -(void)fetchByPartnerIdentifierWithPartnerIdentifier:(NSString * _Nonnull)partnerIdentifier operationalStatus:(NSString * _Nonnull)operationalStatus callback:(void (^ _Nullable)(FlyBuySite * _Nullable, NSError * _Nullable))callback;
-		[Export ("fetchByPartnerIdentifierWithPartnerIdentifier:operationalStatus:callback:")]
-		void FetchByPartnerIdentifierWithPartnerIdentifier (string partnerIdentifier, string operationalStatus, [NullAllowed] Action<FlyBuySite, NSError> callback);
+		// -(void)fetchByPartnerIdentifierWithPartnerIdentifier:(NSString * _Nonnull)partnerIdentifier options:(FlyBuySiteOptions * _Nonnull)options callback:(void (^ _Nullable)(FlyBuySite * _Nullable, NSError * _Nullable))callback;
+		[Export ("fetchByPartnerIdentifierWithPartnerIdentifier:options:callback:")]
+		void FetchByPartnerIdentifierWithPartnerIdentifier (string partnerIdentifier, FlyBuySiteOptions options, [NullAllowed] Action<FlyBuySite, NSError> callback);
 
+		// -(void)fetchWithRegion:(FlyBuyCircularRegion * _Nonnull)region options:(FlyBuySiteOptions * _Nonnull)options callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback;
+		[Export ("fetchWithRegion:options:callback:")]
+		void FetchWithRegion (FlyBuyCircularRegion region, FlyBuySiteOptions options, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
+
+		// -(void)fetchNearWithPlace:(FlyBuyPlace * _Nonnull)place radius:(double)radius options:(FlyBuySiteOptions * _Nonnull)options callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback;
+		[Export ("fetchNearWithPlace:radius:options:callback:")]
+		void FetchNearWithPlace (FlyBuyPlace place, double radius, FlyBuySiteOptions options, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
+	}
+
+	// @interface FlyBuy_Swift_1504 (FlyBuySitesManager)
+	[Category]
+	[BaseType (typeof(FlyBuySitesManager))]
+	interface FlyBuySitesManager_FlyBuy_Swift_1504
+	{
 		// -(void)fetchByPartnerIdentifierWithPartnerIdentifier:(NSString * _Nonnull)partnerIdentifier callback:(void (^ _Nullable)(FlyBuySite * _Nullable, NSError * _Nullable))callback;
 		[Export ("fetchByPartnerIdentifierWithPartnerIdentifier:callback:")]
 		void FetchByPartnerIdentifierWithPartnerIdentifier (string partnerIdentifier, [NullAllowed] Action<FlyBuySite, NSError> callback);
+
+		// -(void)fetchByPartnerIdentifierWithPartnerIdentifier:(NSString * _Nonnull)partnerIdentifier operationalStatus:(NSString * _Nonnull)operationalStatus callback:(void (^ _Nullable)(FlyBuySite * _Nullable, NSError * _Nullable))callback;
+		[Export ("fetchByPartnerIdentifierWithPartnerIdentifier:operationalStatus:callback:")]
+		void FetchByPartnerIdentifierWithPartnerIdentifier (string partnerIdentifier, string operationalStatus, [NullAllowed] Action<FlyBuySite, NSError> callback);
 
 		// -(void)fetchWithQuery:(NSString * _Nullable)query page:(NSInteger)page callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, FlyBuyPagination * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated. Use FlyBuy.Core.sites.fetchByPartnerIdentifier instead.")));
 		[Export ("fetchWithQuery:page:callback:")]
@@ -1081,25 +1333,25 @@ namespace FlyBuy
 		[Export ("fetchWithQuery:page:operationalStatus:callback:")]
 		void FetchWithQuery ([NullAllowed] string query, nint page, string operationalStatus, [NullAllowed] Action<NSArray<FlyBuySite>, FlyBuyPagination, NSError> callback);
 
-		// -(void)fetchWithRegion:(CLCircularRegion * _Nonnull)region page:(NSInteger)page callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated and will be removed in a future SDK release.")));
-		[Export ("fetchWithRegion:page:callback:")]
-		void FetchWithRegion (CLCircularRegion region, nint page, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
-
-		// -(void)fetchWithRegion:(CLCircularRegion * _Nonnull)region page:(NSInteger)page operationalStatus:(NSString * _Nonnull)operationalStatus callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated and will be removed in a future SDK release.")));
-		[Export ("fetchWithRegion:page:operationalStatus:callback:")]
-		void FetchWithRegion (CLCircularRegion region, nint page, string operationalStatus, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
-
-		// -(void)fetchWithRegion:(CLCircularRegion * _Nonnull)region page:(NSInteger)page per:(NSInteger)per callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated and will be removed in a future SDK release.")));
-		[Export ("fetchWithRegion:page:per:callback:")]
-		void FetchWithRegion (CLCircularRegion region, nint page, nint per, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
-
-		// -(void)fetchWithRegion:(CLCircularRegion * _Nonnull)region page:(NSInteger)page per:(NSInteger)per operationalStatus:(NSString * _Nonnull)operationalStatus callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated and will be removed in a future SDK release.")));
-		[Export ("fetchWithRegion:page:per:operationalStatus:callback:")]
-		void FetchWithRegion (CLCircularRegion region, nint page, nint per, string operationalStatus, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
-
 		// -(void)fetchAllWithQuery:(NSString * _Nullable)query callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated. Use FlyBuyCore.sites.fetchByPartnerIdentifier instead.")));
 		[Export ("fetchAllWithQuery:callback:")]
 		void FetchAllWithQuery ([NullAllowed] string query, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
+
+		// -(void)fetchWithRegion:(CLCircularRegion * _Nonnull)region page:(NSInteger)page operationalStatus:(NSString * _Nonnull)operationalStatus callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated. Use FlyBuy.Core.sites.fetch(region:, options:) instead.")));
+		[Export ("fetchWithRegion:page:operationalStatus:callback:")]
+		void FetchWithRegion (CLCircularRegion region, nint page, string operationalStatus, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
+
+		// -(void)fetchWithRegion:(CLCircularRegion * _Nonnull)region page:(NSInteger)page per:(NSInteger)per callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated. Use FlyBuy.Core.sites.fetch(region:, options:) instead.")));
+		[Export ("fetchWithRegion:page:per:callback:")]
+		void FetchWithRegion (CLCircularRegion region, nint page, nint per, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
+
+		// -(void)fetchWithRegion:(CLCircularRegion * _Nonnull)region page:(NSInteger)page per:(NSInteger)per operationalStatus:(NSString * _Nonnull)operationalStatus callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated. Use FlyBuy.Core.sites.fetch(region:, options:) instead.")));
+		[Export ("fetchWithRegion:page:per:operationalStatus:callback:")]
+		void FetchWithRegion (CLCircularRegion region, nint page, nint per, string operationalStatus, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
+
+		// -(void)fetchWithRegion:(CLCircularRegion * _Nonnull)region page:(NSInteger)page callback:(void (^ _Nullable)(NSArray<FlyBuySite *> * _Nullable, NSError * _Nullable))callback __attribute__((deprecated("This method for fetching sites has been deprecated. Use FlyBuy.Core.sites.fetch(region:, options:) instead.")));
+		[Export ("fetchWithRegion:page:callback:")]
+		void FetchWithRegion (CLCircularRegion region, nint page, [NullAllowed] Action<NSArray<FlyBuySite>, NSError> callback);
 	}
 
 	// @interface FlyBuySitesManagerError : NSObject
@@ -1138,9 +1390,10 @@ namespace FlyBuy
 		void Configure ();
 	}
 
-	// @interface FlyBuyPickup_Swift_341 (FlyBuyPickupManager) <CLLocationManagerDelegate>
+	// @interface FlyBuyPickup_Swift_345 (FlyBuyPickupManager) <CLLocationManagerDelegate>
+	[Category]
 	[BaseType (typeof(FlyBuyPickupManager))]
-	interface FlyBuyPickupManager_FlyBuyPickup_Swift_341 : ICLLocationManagerDelegate
+	interface FlyBuyPickupManager_FlyBuyPickup_Swift_345 : ICLLocationManagerDelegate
 	{
 		// -(void)locationManager:(CLLocationManager * _Nonnull)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status;
 		[Export ("locationManager:didChangeAuthorizationStatus:")]
@@ -1156,10 +1409,23 @@ namespace FlyBuy
 	}
 
 	// @interface FlyBuyLiveStatusManager : NSObject
+	[iOS (16,2)]
 	[BaseType (typeof(NSObject))]
 	[DisableDefaultCtor]
 	interface FlyBuyLiveStatusManager
 	{
+		// @property (readonly, nonatomic, strong, class) FlyBuyLiveStatusManager * _Nonnull shared;
+		[Static]
+		[Export ("shared", ArgumentSemantic.Strong)]
+		FlyBuyLiveStatusManager Shared { get; }
+
+		// @property (copy, nonatomic) NSString * _Nullable liveStatusIconName;
+		[NullAllowed, Export ("liveStatusIconName")]
+		string LiveStatusIconName { get; set; }
+
+		// -(void)configureWithOptions:(FlyBuyLiveStatusOptions * _Nonnull)configOptions;
+		[Export ("configureWithOptions:")]
+		void ConfigureWithOptions (FlyBuyLiveStatusOptions configOptions);
 	}
 
 	// @interface FlyBuyLiveStatusOptions : NSObject
@@ -1222,10 +1488,10 @@ namespace FlyBuy
 		bool IsFlyBuyNotifyUserInfo (NSDictionary userInfo);
 	}
 
-	// @interface FlyBuyNotify_Swift_357 (FlyBuyNotifyManager)
+	// @interface FlyBuyNotify_Swift_361 (FlyBuyNotifyManager)
 	[Category]
 	[BaseType (typeof(FlyBuyNotifyManager))]
-	interface FlyBuyNotifyManager_FlyBuyNotify_Swift_357
+	interface FlyBuyNotifyManager_FlyBuyNotify_Swift_361
 	{
 		// -(void)syncWithForce:(BOOL)force callback:(void (^ _Nullable)(NSError * _Nullable))callback;
 		[Export ("syncWithForce:callback:")]
@@ -1257,6 +1523,11 @@ namespace FlyBuy
 		// @property (readonly, copy, nonatomic) NSDictionary * _Nullable data;
 		[NullAllowed, Export ("data", ArgumentSemantic.Copy)]
 		NSDictionary Data { get; }
+
+		// -(instancetype _Nonnull)initWithTitle:(NSString * _Nonnull)title content:(NSString * _Nonnull)content data:(NSDictionary * _Nullable)data __attribute__((objc_designated_initializer));
+		[Export ("initWithTitle:content:data:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string title, string content, [NullAllowed] NSDictionary data);
 	}
 
 	// @interface FlyBuyNotifyError : NSObject
@@ -1271,7 +1542,7 @@ namespace FlyBuy
 		// -(instancetype _Nonnull)init:(enum NotifyErrorType)typeIn __attribute__((objc_designated_initializer));
 		[Export ("init:")]
 		[DesignatedInitializer]
-		IntPtr Constructor (NotifyErrorType typeIn);
+		NativeHandle Constructor (NotifyErrorType typeIn);
 
 		// @property (readonly, copy, nonatomic) NSString * _Nonnull description;
 		[Export ("description")]
