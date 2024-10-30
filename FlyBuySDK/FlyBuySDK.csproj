@@ -6,7 +6,7 @@
         <IsBindingProject>true</IsBindingProject>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>Radiusnetworks.Flybuy.IOS</PackageId>
-        <Version>2.10.2.0</Version>
+        <Version>2.10.4.0</Version>
         <Title>Flybuy Pickup iOS SDK for .NET</Title>
         <Authors>Radius Networks, Inc</Authors>
         <Description>Flybuy Pickup iOS SDK for .NET</Description>
@@ -18,8 +18,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ObjcBindingApiDefinition Include="ApiDefinition.cs"/>
-        <ObjcBindingCoreSource Include="StructsAndEnums.cs"/>
+        <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
+        <ObjcBindingCoreSource Include="StructsAndEnums.cs" />
     </ItemGroup>
 
     <ItemGroup>
